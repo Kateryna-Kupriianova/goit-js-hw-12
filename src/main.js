@@ -5,8 +5,13 @@ import "izitoast/dist/css/iziToast.min.css";
 
 
 const apiKey = '44406774-b6929e0ee65f9835201f12742';
+let currentPage = 1;
+let userInput = '';
 
 const searchForm = document.querySelector('form');
+const searchInput = document.querySelector('input');
+const searchButton = document.querySelector('button[type=submit]');
+const loadMoreBtn = document.querySelector('button[type=button]');
 
 searchForm.style.display = 'flex';
 searchForm.style.justifyContent = 'center';
@@ -18,16 +23,12 @@ searchForm.style.fontFamily = 'Montserrat';
 searchForm.style.fontSize = '16px';
 
 
-const searchInput = document.querySelector('input');
-
 searchInput.style.width = '272px';
 searchInput.style.paddingLeft = '16px';
 searchInput.style.border = '1px solid #808080';
 searchInput.style.borderRadius = '4px';
 searchInput.style.color = '#808080';
 
-
-const searchButton = document.querySelector('button');
 
 searchButton.style.width = '91px';
 searchButton.style.padding = '0px';
@@ -36,33 +37,75 @@ searchButton.style.border = 'none';
 searchButton.style.borderRadius = '8px';
 searchButton.style.color = '#FFFFFF';
 
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form');
-    const input = document.querySelector('input[type="text"]');
+loadMoreBtn.style.width = '125px';
+loadMoreBtn.style.height = '40px';
+loadMoreBtn.style.padding = '8px 16px 8px 16px';
+loadMoreBtn.style.backgroundColor = '#4E75FF';
+loadMoreBtn.style.border = 'none';
+loadMoreBtn.style.borderRadius = '8px';
+loadMoreBtn.style.color = '#FFFFFF';
+loadMoreBtn.style.display = 'flex';
+loadMoreBtn.style.justifyContent = 'center';
+loadMoreBtn.style.margin = '0 auto';
+loadMoreBtn.style.marginTop = '10px';
+loadMoreBtn.style.cursor = 'pointer';
+loadMoreBtn.classList.add('hidden');
 
-    form.addEventListener('submit', async (event) => {
+function showLoadMore() {
+    loadMoreBtn.classList.remove('hidden');
+}
+
+function hideLoadMore() {
+    loadMoreBtn.classList.add('hidden');
+}
+
+function showEndMessage() {
+    iziToast.info({
+        title: 'Info',
+        message: "We're sorry, but you've reached the end of search results.",
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    hideLoadMore();
+
+    searchForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        if (input.value.trim() === '') {
-            
+        userInput = searchInput.value.trim();
+        if (userInput === '') {
+            hideLoadMore();
             iziToast.error({
                 title: 'Error',
                 message: 'Поле пошуку не може бути порожнім',
             });
         
         } else {
+            currentPage = 1;
+            hideLoadMore();
             try {
-                await getImages(apiKey, input.value);
-                input.value = '';
+                await getImages(apiKey, userInput, currentPage, showLoadMore, hideLoadMore, showEndMessage);
+                searchInput.value = '';
             } catch (error) {
                     iziToast.error({
                         title: 'Error',
                         message: 'An error occurred while fetching images. Please try again!',
                     });
                     console.error('Error fetching images:', error);
-                }
+            }
         }
     });
-
+    
+     loadMoreBtn.addEventListener('click', async () => {
+        currentPage++;
+        try {
+            await getImages(apiKey, userInput, currentPage, showLoadMore, hideLoadMore, showEndMessage);
+        } catch (error) {
+            iziToast.error({
+                title: 'Error',
+                message: 'An error occurred while fetching more images. Please try again!',
+            });
+            console.error('Error fetching more images:', error);
+        }
+    });
 });
-
 

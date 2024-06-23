@@ -9,7 +9,8 @@ gallery.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
 gallery.style.gap = '16px';
 gallery.style.padding = '16px';
 
-export function displayImages(images) {
+export function displayImages(images,currentPage) {
+
     if (!Array.isArray(images)) {
         iziToast.error({
             title: 'Error',
@@ -20,7 +21,10 @@ export function displayImages(images) {
         return;
     }
     const imageResults = document.getElementById('imageResults');
-    imageResults.innerHTML = '';
+    if (currentPage === 1) {
+        imageResults.innerHTML = '';
+    }
+   
 
     images.forEach(image => {
         const imgElement = document.createElement('a');
@@ -38,7 +42,7 @@ export function displayImages(images) {
             </div>`;
         imageResults.appendChild(imgElement);
 
-
+           
         const cardStyle = imgElement;
         cardStyle.style.position = 'relative';
         cardStyle.style.overflow = 'hidden';
@@ -55,7 +59,7 @@ export function displayImages(images) {
         cardInfo.style.color = '#fff';
         cardInfo.style.fontSize = '14px';
     });
-
+    
     const lightbox = new SimpleLightbox('.gallery a', {
         captionsData: 'alt',
         captionDelay: 250,
@@ -68,6 +72,8 @@ export function clearImages() {
     const imageResults = document.getElementById('imageResults');
     imageResults.innerHTML = '';
 }
+
+
 
 
 
