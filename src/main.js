@@ -13,6 +13,15 @@ const searchInput = document.querySelector('input');
 const searchButton = document.querySelector('button[type=submit]');
 const loadMoreBtn = document.querySelector('button[type=button]');
 
+
+const style = document.createElement('style');
+style.innerHTML = `
+.hidden {
+    display: none;
+}
+`;
+document.head.appendChild(style);
+
 searchForm.style.display = 'flex';
 searchForm.style.justifyContent = 'center';
 searchForm.style.gap = '8px';
@@ -57,6 +66,7 @@ function showLoadMore() {
 
 function hideLoadMore() {
     loadMoreBtn.classList.add('hidden');
+    console.log('Кнопка схована:', loadMoreBtn.classList.contains('hidden'));
 }
 
 function showEndMessage() {
@@ -64,6 +74,17 @@ function showEndMessage() {
         title: 'Info',
         message: "We're sorry, but you've reached the end of search results.",
     });
+}
+
+function scrollToNewImages() {
+    const imgElement = document.querySelector('.image-card');
+    if (imgElement) {
+        const cardHeight = imgElement.getBoundingClientRect().height;
+        window.scrollBy({
+            top: cardHeight * 2,
+            behavior: 'smooth'
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -99,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPage++;
         try {
             await getImages(apiKey, userInput, currentPage, showLoadMore, hideLoadMore, showEndMessage);
+            scrollToNewImages();
         } catch (error) {
             iziToast.error({
                 title: 'Error',
