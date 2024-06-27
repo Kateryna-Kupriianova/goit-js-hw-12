@@ -4,7 +4,7 @@ import "izitoast/dist/css/iziToast.min.css";
 
 
 
-const apiKey = '44406774-b6929e0ee65f9835201f12742';
+
 let currentPage = 1;
 let userInput = '';
 
@@ -53,7 +53,7 @@ loadMoreBtn.style.backgroundColor = '#4E75FF';
 loadMoreBtn.style.border = 'none';
 loadMoreBtn.style.borderRadius = '8px';
 loadMoreBtn.style.color = '#FFFFFF';
-loadMoreBtn.style.display = 'flex';
+
 loadMoreBtn.style.justifyContent = 'center';
 loadMoreBtn.style.margin = '0 auto';
 loadMoreBtn.style.marginTop = '10px';
@@ -87,7 +87,7 @@ function scrollToNewImages() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+
     hideLoadMore();
 
     searchForm.addEventListener('submit', async (event) => {
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentPage = 1;
             hideLoadMore();
             try {
-                await getImages(apiKey, userInput, currentPage, showLoadMore, hideLoadMore, showEndMessage);
+                await getImages(userInput, currentPage, showLoadMore, hideLoadMore, showEndMessage);
                 searchInput.value = '';
             } catch (error) {
                     iziToast.error({
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
      loadMoreBtn.addEventListener('click', async () => {
         currentPage++;
         try {
-            await getImages(apiKey, userInput, currentPage, showLoadMore, hideLoadMore, showEndMessage);
+            await getImages(userInput, currentPage, showLoadMore, hideLoadMore, showEndMessage);
             scrollToNewImages();
         } catch (error) {
             iziToast.error({
@@ -127,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 message: 'An error occurred while fetching more images. Please try again!',
             });
             console.error('Error fetching more images:', error);
+           
         }
     });
-});
-

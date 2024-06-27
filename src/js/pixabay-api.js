@@ -3,10 +3,18 @@ import "izitoast/dist/css/iziToast.min.css";
 import { displayImages, clearImages } from "./render-functions";
 import axios from "axios";
 
+const loader = document.querySelector('.loader');
+function showLoader() {
+  loader.classList.remove('hidden')  
+}
+
+function hideLoader() {
+   loader.classList.add('hidden') 
+}
 const apiKey = '44406774-b6929e0ee65f9835201f12742';
 
-
-export default async function getImages(apiKey,userInput, currentPage = 1, showLoadMore, hideLoadMore, showEndMessage) {
+showLoader();
+export default async function getImages(userInput, currentPage = 1, showLoadMore, hideLoadMore, showEndMessage) {
     const BASE_URL = 'https://pixabay.com/';
     const END_POINT = 'api/';
     const params = new URLSearchParams({
@@ -21,7 +29,7 @@ export default async function getImages(apiKey,userInput, currentPage = 1, showL
     });
     const url = `${BASE_URL}${END_POINT}?${params}`;
     
-    showLoader();
+    
 
     try {
         const response = await axios.get(url);
@@ -58,13 +66,5 @@ export default async function getImages(apiKey,userInput, currentPage = 1, showL
         
 }
 
-const loader = document.querySelector('.loader');
-function showLoader() {
-  loader.classList.remove('hidden')  
-}
 
-function hideLoader() {
-   loader.classList.add('hidden') 
-}
- 
 
