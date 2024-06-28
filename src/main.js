@@ -60,6 +60,9 @@ loadMoreBtn.style.marginTop = '10px';
 loadMoreBtn.style.cursor = 'pointer';
 loadMoreBtn.classList.add('hidden');
 
+
+
+
 function showLoadMore() {
     loadMoreBtn.classList.remove('hidden');
 }

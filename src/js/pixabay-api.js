@@ -5,11 +5,13 @@ import axios from "axios";
 
 const loader = document.querySelector('.loader');
 function showLoader() {
-  loader.classList.remove('hidden')  
+    loader.classList.remove('hidden') 
+   
 }
 
 function hideLoader() {
-   loader.classList.add('hidden') 
+    loader.classList.add('hidden') 
+    
 }
 const apiKey = '44406774-b6929e0ee65f9835201f12742';
 
