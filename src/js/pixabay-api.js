@@ -13,7 +13,7 @@ function hideLoader() {
 }
 const apiKey = '44406774-b6929e0ee65f9835201f12742';
 
-showLoader();
+
 export default async function getImages(userInput, currentPage = 1, showLoadMore, hideLoadMore, showEndMessage) {
     const BASE_URL = 'https://pixabay.com/';
     const END_POINT = 'api/';
@@ -30,8 +30,8 @@ export default async function getImages(userInput, currentPage = 1, showLoadMore
     const url = `${BASE_URL}${END_POINT}?${params}`;
     
     
-
     try {
+        showLoader();
         const response = await axios.get(url);
         const data = response.data;
             
@@ -62,6 +62,7 @@ export default async function getImages(userInput, currentPage = 1, showLoadMore
         hideLoadMore();
     } finally {
         hideLoader();
+        
     }
         
 }
